@@ -32,22 +32,27 @@ const themes = [
   "Neuroscience & neurotechnology",
   "Responsibility & society",
 ];
+const themeDescriptions = [
+  "Understanding how humans and intelligent systems can learn and adapt together, enhancing human capability while keeping people at the centre of the collaboration.",
+  "Bringing neuroscience, neurotechnology, psychology, and engineering together to understand the relationship between human intelligence and intelligent systems.",
+  "Drawing on philosophy and law to explore how hybrid intelligence can develop safely and responsibly, preserving autonomy, agency, and accountability.",
+];
 const projects = Array.from({ length: 11 }, (_, index) => ({
   id: index + 1,
   theme: themes[index % 3],
   university: index % 2 ? "University of Glasgow" : "University of Strathclyde",
 }));
 const team = [
-  "Professor Keith Mathieson",
-  "Professor Shuzo Sakata",
-  "Professor Aleksandra Vuckovic",
-  "Professor Jonathan Delafield-Butt",
-  "Professor Monika Harvey",
-  "Professor Guido Noto La Diega",
-  "Dr William McGeown",
-  "Dr Emma Gordon",
-  "Dr Brianna Vandrey",
-  "Professor Patricia Connolly",
+  { name: "Professor Keith Mathieson", university: "University of Strathclyde", photo: "keith-mathieson.webp", profile: "https://pureportal.strath.ac.uk/en/persons/keith-mathieson/" },
+  { name: "Professor Shuzo Sakata", university: "University of Strathclyde", photo: "shuzo-sakata.webp", profile: "https://pureportal.strath.ac.uk/en/persons/shuzo-sakata/" },
+  { name: "Professor Aleksandra Vuckovic", university: "University of Glasgow", photo: "aleksandra-vuckovic.jpg", profile: "https://www.gla.ac.uk/schools/engineering/staff/aleksandravuckovic/" },
+  { name: "Professor Jonathan Delafield-Butt", university: "University of Strathclyde", photo: "jonathan-delafield-butt.webp", profile: "https://pureportal.strath.ac.uk/en/persons/jonathan-delafield-butt/" },
+  { name: "Professor Monika Harvey", university: "University of Glasgow", photo: "monika-harvey.jpg", profile: "https://www.gla.ac.uk/schools/psychologyneuroscience/staff/monikaharvey/" },
+  { name: "Professor Guido Noto La Diega", university: "University of Strathclyde", photo: "guido-noto-la-diega.webp", profile: "https://pureportal.strath.ac.uk/en/persons/guido-noto-la-diega/" },
+  { name: "Dr William McGeown", university: "University of Strathclyde", photo: "william-mcgeown.webp", profile: "https://pureportal.strath.ac.uk/en/persons/william-mcgeown/" },
+  { name: "Dr Emma Gordon", university: "University of Glasgow", photo: "emma-gordon.jpg", profile: "https://www.gla.ac.uk/schools/humanities/staff/emmagordon/" },
+  { name: "Dr Brianna Vandrey", university: "University of Glasgow", photo: "1695656485944.jpg", profile: "https://www.gla.ac.uk/schools/psychologyneuroscience/staff/briannavandrey/" },
+  { name: "Professor Patricia Connolly", university: "University of Strathclyde", photo: "patricia-connolly.webp", profile: "https://www.strath.ac.uk/staff/connollypatriciaprof/" },
 ];
 const lorem =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -261,9 +266,10 @@ function Home() {
             <span className="eyebrow">PROGRAMME NEWS · 04 AUGUST 2026</span>
             <h3>£5 million Leverhulme award for Responsible Hybrid Intelligence</h3>
             <p>
-              The programme has been awarded £5 million by The Leverhulme Trust.
-              Yashar’s announcement also identifies a separate £4.1 million
-              investment from Strathclyde and Glasgow to support the wider initiative.
+              A £5 million award from The Leverhulme Trust, alongside a further
+              £4.1 million investment from the University of Strathclyde and the
+              University of Glasgow, will support a new generation of researchers
+              shaping the future of human–AI collaboration.
             </p>
             <a
               className="text-link"
@@ -289,22 +295,36 @@ function About() {
       <section className="section container prose">
         <h2>Humans and intelligent systems, learning together.</h2>
         <p className="lead">
-          Responsible Hybrid Intelligence explores how humans and intelligent
-          systems can learn and adapt together safely and responsibly.
+          Responsible Hybrid Intelligence (RHI) brings together the University of
+          Strathclyde and the University of Glasgow to explore how people and
+          intelligent systems can learn and adapt together, safely and responsibly.
         </p>
         <p>
-          The nine-year programme brings together AI, neuroscience,
-          neurotechnology, psychology, engineering, philosophy, and law. We aim
-          to enhance human capability while preserving autonomy, agency, and
-          accountability.
+          As AI and neurotechnology advance, the relationship between people and
+          intelligent systems is changing. Our aim is to understand how this
+          collaboration can enhance human capability while preserving autonomy,
+          agency, and accountability.
         </p>
         <p>
-          Building on the strengths of the Strathclyde Neurotechnology Centre
-          and Glasgow Neurotechnology Centre, the programme will train 40 PhD
-          researchers. The Leverhulme Trust has awarded the programme £5 million.
-          Yashar’s announcement also identifies a separate £4.1 million investment
-          from the two universities. The programme is a 50/50 partnership between
-          Strathclyde and Glasgow.
+          Over nine years, our Leverhulme Doctoral Programme will train 40 PhD
+          researchers, bringing together expertise in AI, neuroscience,
+          neurotechnology, psychology, engineering, philosophy, and law. Through
+          this interdisciplinary approach, we will establish the scientific
+          foundations of Responsible Hybrid Intelligence and prepare the next
+          generation of researchers to shape its future.
+        </p>
+        <p>
+          The programme builds on the complementary strengths of the Strathclyde
+          Neurotechnology Centre and Glasgow Neurotechnology Centre, with an equal
+          partnership between the two universities. Students, academics, and
+          collaborators will work together across disciplines to address the
+          scientific and societal questions at the heart of human–AI collaboration.
+        </p>
+        <p>
+          This work is supported by a £5 million award from The Leverhulme Trust
+          and a further £4.1 million investment from the University of Strathclyde
+          and the University of Glasgow. Their shared commitment enables ambitious,
+          curiosity-driven research into a responsible future for hybrid intelligence.
         </p>
       </section>
       <section id="themes" className="section paths">
@@ -325,7 +345,7 @@ function About() {
                   <Scale />
                 )}
                 <h3>{theme}</h3>
-                <p>{lorem}</p>
+                <p>{themeDescriptions[index]}</p>
               </article>
             ))}
           </div>
@@ -334,8 +354,21 @@ function About() {
       <section className="section container">
         <span className="eyebrow">OUR PEOPLE</span>
         <h2>A genuinely interdisciplinary team.</h2>
-        <div className="directors">
+        <p className="lead">
+          Led by Dr Yashar Moshfeghi and Professor Simon Hanslmayr, our team brings
+          together the expertise and perspectives that have shaped the programme
+          from its earliest conception.
+        </p>
+        <div className="directors team-leaders">
           <article>
+            <img
+              className="team-portrait"
+              src={imagePath("yashar-moshfeghi.webp")}
+              alt="Dr Yashar Moshfeghi"
+              width="180"
+              height="180"
+              loading="lazy"
+            />
             <span>PROGRAMME DIRECTOR</span>
             <h3>Dr Yashar Moshfeghi</h3>
             <p>University of Strathclyde</p>
@@ -347,6 +380,14 @@ function About() {
             </a>
           </article>
           <article>
+            <img
+              className="team-portrait"
+              src={imagePath("simon-hanslmayr.jpg")}
+              alt="Professor Simon Hanslmayr"
+              width="180"
+              height="180"
+              loading="lazy"
+            />
             <span>DEPUTY DIRECTOR</span>
             <h3>Professor Simon Hanslmayr</h3>
             <p>University of Glasgow</p>
@@ -359,8 +400,13 @@ function About() {
           </article>
         </div>
         <div className="team-list">
-          {team.map((name) => (
-            <p key={name}>{name}</p>
+          {team.map((person) => (
+            <article className="team-member" key={person.name}>
+              {person.photo ? <img className="team-portrait" src={imagePath(person.photo)} alt={person.name} width="180" height="180" loading="lazy" /> : <div className="team-portrait portrait-pending"><Users size={32} aria-hidden="true" /><span>Photo coming soon</span></div>}
+              <h3>{person.name}</h3>
+              <p>{person.university}</p>
+              <a className="text-link" href={person.profile} aria-label={`View ${person.name}'s profile`}>View profile <ArrowUpRight size={16} /></a>
+            </article>
           ))}
         </div>
       </section>
