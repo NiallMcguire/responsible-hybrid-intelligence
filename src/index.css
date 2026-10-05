@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #252d36;
+  background: #fff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --blue: #004de5;
+  --ink: #122535;
+  --red: #c93e4d;
+  --pale: #f0f4f6;
+  --muted: #626d78;
+  letter-spacing: 0;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+a,
+input,
+select,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+summary {
+  cursor: pointer;
+}
+button {
+  border: 0;
+}
+a,
+button,
+input,
+select,
+summary {
+  outline-offset: 5px;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #d44d5a;
+}
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+h1,
+h2,
+h3 {
+  font-family: "Manrope", sans-serif;
+  letter-spacing: 0;
+}
+p {
+  line-height: 1.75;
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+svg {
+  flex-shrink: 0;
+}
+h1 {
+  font-size: 56px;
+  line-height: 1.14;
+  font-weight: 800;
+}
+h2 {
+  font-size: 36px;
+  line-height: 1.28;
+  font-weight: 700;
+}
+h3 {
+  font-size: 23px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 30px;
+}
+::selection {
+  background: #dce7ff;
+}
+.container {
+  width: min(1240px, calc(100% - 104px));
+  margin-inline: auto;
+}
+.section {
+  padding-block: 86px;
+}
+.eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--blue);
+  margin-bottom: 20px;
+}
+.muted {
+  color: var(--muted);
+}
+.lead {
+  font-size: 21px;
+  line-height: 1.6;
+}
+.blue-text {
+  color: var(--blue);
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--blue);
+  font-size: 14px;
+  font-weight: 600;
+  padding-block: 8px;
+}
+.text-link:hover {
+  text-decoration: underline;
+}
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  background: var(--blue);
+  color: white;
+  padding: 16px 23px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.action:hover {
+  background: #0036a1;
+}
+.action.light {
+  background: white;
+  color: var(--ink);
+}
+.action.light:hover {
+  background: #dce7ff;
+}
+.skip-link {
+  position: absolute;
+  left: 20px;
+  top: -80px;
+  background: white;
+  padding: 15px;
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 10px;
+}

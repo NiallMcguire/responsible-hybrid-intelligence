@@ -1,0 +1,982 @@
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  HashRouter,
+  Link,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Menu,
+  X,
+  Search,
+  Plus,
+  Minus,
+  Globe2,
+  GraduationCap,
+  BrainCircuit,
+  Scale,
+  Users,
+} from "lucide-react";
+import "./App.css";
+
+const SiteRouter = import.meta.env.MODE === "github-pages" ? HashRouter : BrowserRouter;
+const imagePath = (filename) => `${import.meta.env.BASE_URL}images/${filename}`;
+const copyrightYear = new Date().getFullYear();
+const themes = [
+  "AI & human collaboration",
+  "Neuroscience & neurotechnology",
+  "Responsibility & society",
+];
+const projects = Array.from({ length: 11 }, (_, index) => ({
+  id: index + 1,
+  theme: themes[index % 3],
+  university: index % 2 ? "University of Glasgow" : "University of Strathclyde",
+}));
+const team = [
+  "Professor Keith Mathieson",
+  "Professor Shuzo Sakata",
+  "Professor Aleksandra Vuckovic",
+  "Professor Jonathan Delafield-Butt",
+  "Professor Monika Harvey",
+  "Professor Guido Noto La Diega",
+  "Dr William McGeown",
+  "Dr Emma Gordon",
+  "Dr Brianna Vandrey",
+  "Professor Patricia Connolly",
+];
+const lorem =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+function Action({ to, children, light = false }) {
+  return (
+    <Link className={`action ${light ? "light" : ""}`} to={to}>
+      {children}
+      <ArrowUpRight size={19} aria-hidden="true" />
+    </Link>
+  );
+}
+function PageIntro({ eyebrow, title, children }) {
+  return (
+    <section className="page-intro">
+      <div className="container">
+        <div className="breadcrumb">
+          <Link to="/">Home</Link>
+          <span>/</span>
+          {eyebrow}
+        </div>
+        <span className="eyebrow">{eyebrow}</span>
+        <h1>{title}</h1>
+        <p>{children}</p>
+      </div>
+    </section>
+  );
+}
+function Home() {
+  return (
+    <>
+      <section className="hero">
+        <img
+          className="hero-image"
+          src={imagePath("logo-banner-3.webp")}
+          alt="Neural branches connecting with electronic circuitry"
+          fetchPriority="high"
+        />
+        <div className="hero-shade" />
+        <div className="container hero-content">
+          <div className="hero-kicker">
+            <span />
+            PHD RECRUITMENT · COHORT 01
+          </div>
+          <h1>
+            Responsible
+            <br />
+            Hybrid Intelligence<span className="title-dot">.</span>
+          </h1>
+          <h2 className="hero-recruiting">We’re recruiting 11 PhD researchers.</h2>
+          <p>Join our first cohort at Strathclyde and Glasgow.</p>
+          <div className="hero-actions">
+            <Action to="/projects" light>View the 11 PhD studentships</Action>
+            <Link className="hero-programme-link" to="/programme">
+              About the programme <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
+      </section>
+      <section className="recruitment">
+        <div className="container recruitment-inner">
+          <div className="recruitment-label">
+            <span className="status-dot" />
+            PHD RECRUITMENT
+          </div>
+          <div>
+            <h2>Your PhD. A new field. A shared future.</h2>
+            <p>
+              First-cohort studentships: project briefs and application guidance are being finalised.
+            </p>
+          </div>
+          <Link to="/projects">
+            Recruitment information <ArrowUpRight size={21} />
+          </Link>
+        </div>
+      </section>
+      <section className="intro section container" id="introduction">
+        <div>
+          <span className="eyebrow">A NEW FIELD. A SHARED VISION.</span>
+          <h2>
+            What happens when{" "}
+            <br />
+            humans and AI{" "}
+            <br />
+            <span className="blue-text"> evolve together?</span>
+          </h2>
+        </div>
+        <div className="intro-copy">
+          <p className="lead">
+            We’re bringing people and intelligent systems together, responsibly.
+          </p>
+          <p>
+            As AI and neurotechnology advance, humans and intelligent systems
+            will increasingly learn and adapt together. How can we enhance human
+            capability while preserving autonomy, agency, and accountability?
+          </p>
+          <p>
+            Our Leverhulme Doctoral Programme brings together the University of
+            Strathclyde and the University of Glasgow to establish the
+            scientific foundations of Responsible Hybrid Intelligence.
+          </p>
+          <Link className="text-link" to="/about">
+            Meet Responsible Hybrid Intelligence <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
+      <section className="stats container" aria-label="Programme at a glance">
+        <div>
+          <strong>
+            £5<span>m</span>
+          </strong>
+          <span>Leverhulme Trust award</span>
+        </div>
+        <div>
+          <strong>40</strong>
+          <span>PhD researchers</span>
+        </div>
+        <div>
+          <strong>9</strong>
+          <span>Years of discovery</span>
+        </div>
+        <div>
+          <strong>2</strong>
+          <span>Partner universities</span>
+        </div>
+      </section>
+      <section className="paths section">
+        <div className="container">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">CURIOSITY WITHOUT BOUNDARIES</span>
+              <h2>Your next chapter starts here.</h2>
+            </div>
+            <Link className="text-link" to="/programme">
+              Explore the programme <ArrowRight size={18} />
+            </Link>
+          </div>
+          <div className="path-grid">
+            <Link className="path-item" to="/projects">
+              <span className="path-number">01 / RESEARCH</span>
+              <BrainCircuit />
+              <h3>Find your PhD</h3>
+              <p>
+                Explore opportunities at the intersection of human intelligence,
+                AI, and responsible innovation.
+              </p>
+              <span className="path-link">
+                View PhD projects <ArrowUpRight size={21} />
+              </span>
+            </Link>
+            <Link className="path-item" to="/programme#masters">
+              <span className="path-number">02 / TRAINING</span>
+              <GraduationCap />
+              <h3>More than a PhD</h3>
+              <p>
+                A community-led programme connecting disciplines, perspectives,
+                and two leading universities.
+              </p>
+              <span className="path-link">
+                Our training pathways <ArrowUpRight size={21} />
+              </span>
+            </Link>
+            <Link className="path-item" to="/students">
+              <span className="path-number">03 / COMMUNITY</span>
+              <Users />
+              <h3>Belong to something new</h3>
+              <p>
+                Meet our growing community and discover life as an RHI doctoral
+                researcher in Glasgow.
+              </p>
+              <span className="path-link">
+                Meet our students <ArrowUpRight size={21} />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+      <section className="research-band">
+        <div className="container">
+          <span className="eyebrow">CONNECTED BY A BIG QUESTION</span>
+          <h2>
+            Technology that strengthens
+            <br />
+            what makes us human.
+          </h2>
+          <div className="theme-list">
+            {themes.map((theme, index) => (
+              <Link to="/about#themes" key={theme}>
+                <span>0{index + 1}</span>
+                {theme}
+                <ArrowUpRight size={22} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section container news">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">FROM THE PROGRAMME</span>
+            <h2>A new beginning.</h2>
+          </div>
+        </div>
+        <div className="news-layout">
+          <img
+            src={imagePath("glasgow.jpg")}
+            alt="University architecture in Glasgow"
+            loading="lazy"
+          />
+          <div>
+            <span className="eyebrow">PROGRAMME NEWS · 04 AUGUST 2026</span>
+            <h3>£5 million Leverhulme award for Responsible Hybrid Intelligence</h3>
+            <p>
+              The programme has been awarded £5 million by The Leverhulme Trust.
+              Yashar’s announcement also identifies a separate £4.1 million
+              investment from Strathclyde and Glasgow to support the wider initiative.
+            </p>
+            <a
+              className="text-link"
+              href="https://www.leverhulme.ac.uk/news/centenary-doctoral-scholarships"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Read the Trust’s announcement <ArrowUpRight size={18} />
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+function About() {
+  return (
+    <>
+      <PageIntro eyebrow="About RHI" title="A responsible future, together.">
+        Establishing the scientific foundations of a new interdisciplinary
+        field.
+      </PageIntro>
+      <section className="section container prose">
+        <h2>Humans and intelligent systems, learning together.</h2>
+        <p className="lead">
+          Responsible Hybrid Intelligence explores how humans and intelligent
+          systems can learn and adapt together safely and responsibly.
+        </p>
+        <p>
+          The nine-year programme brings together AI, neuroscience,
+          neurotechnology, psychology, engineering, philosophy, and law. We aim
+          to enhance human capability while preserving autonomy, agency, and
+          accountability.
+        </p>
+        <p>
+          Building on the strengths of the Strathclyde Neurotechnology Centre
+          and Glasgow Neurotechnology Centre, the programme will train 40 PhD
+          researchers. The Leverhulme Trust has awarded the programme £5 million.
+          Yashar’s announcement also identifies a separate £4.1 million investment
+          from the two universities. The programme is a 50/50 partnership between
+          Strathclyde and Glasgow.
+        </p>
+      </section>
+      <section id="themes" className="section paths">
+        <div className="container">
+          <span className="eyebrow">RESEARCH DIRECTIONS</span>
+          <h2>Across disciplines. Beyond boundaries.</h2>
+          <p className="muted">
+            Indicative groupings; formal research themes to be confirmed.
+          </p>
+          <div className="path-grid">
+            {themes.map((theme, index) => (
+              <article className="path-item" key={theme}>
+                {index === 0 ? (
+                  <BrainCircuit />
+                ) : index === 1 ? (
+                  <GraduationCap />
+                ) : (
+                  <Scale />
+                )}
+                <h3>{theme}</h3>
+                <p>{lorem}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section container">
+        <span className="eyebrow">OUR PEOPLE</span>
+        <h2>A genuinely interdisciplinary team.</h2>
+        <div className="directors">
+          <article>
+            <span>PROGRAMME DIRECTOR</span>
+            <h3>Dr Yashar Moshfeghi</h3>
+            <p>University of Strathclyde</p>
+            <a
+              className="text-link"
+              href="https://www.strath.ac.uk/staff/moshfeghiyashardr/"
+            >
+              View profile <ArrowUpRight size={16} />
+            </a>
+          </article>
+          <article>
+            <span>DEPUTY DIRECTOR</span>
+            <h3>Professor Simon Hanslmayr</h3>
+            <p>University of Glasgow</p>
+            <a
+              className="text-link"
+              href="https://www.gla.ac.uk/schools/psychologyneuroscience/staff/simonhanslmayr/"
+            >
+              View profile <ArrowUpRight size={16} />
+            </a>
+          </article>
+        </div>
+        <div className="team-list">
+          {team.map((name) => (
+            <p key={name}>{name}</p>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+function Programme() {
+  return (
+    <>
+      <PageIntro
+        eyebrow="PhD Programme"
+        title="Different disciplines. Shared discovery."
+      >
+        Doctoral research at the intersection of human intelligence, intelligent
+        systems, and society.
+      </PageIntro>
+      <section className="section container intro">
+        <div>
+          <span className="eyebrow">YOUR RESEARCH JOURNEY</span>
+          <h2>
+            A PhD with a<br />
+            wider perspective.
+          </h2>
+        </div>
+        <div className="intro-copy">
+          <p className="lead">
+            Join an interdisciplinary community across Strathclyde and Glasgow.
+          </p>
+          <p>
+            The programme will train 40 doctoral researchers over nine years,
+            connecting expertise in AI, neuroscience, neurotechnology,
+            psychology, engineering, philosophy, and law.
+          </p>
+          <p>
+            Our university partnership is shared equally, bringing together the
+            complementary strengths of both institutions. Individual project
+            allocations will be confirmed with the final project catalogue.
+          </p>
+          <Action to="/projects">Explore the 11 studentships</Action>
+        </div>
+      </section>
+      <section className="section paths" id="masters">
+        <div className="container">
+          <span className="eyebrow">PROGRAMME PATHWAYS</span>
+          <div className="directors">
+            <article>
+              <GraduationCap />
+              <h2>PhD programme</h2>
+              <p>
+                Doctoral research within the Responsible Hybrid Intelligence
+                programme.
+              </p>
+              <p>{lorem}</p>
+              <p className="muted">
+                Duration, training schedule, and funding terms to be confirmed.
+              </p>
+            </article>
+            <article>
+              <GraduationCap />
+              <h2>Master’s Plus PhD</h2>
+              <p>A proposed Master’s-to-doctoral research pathway.</p>
+              <p>{lorem}</p>
+              <p className="muted">
+                Availability, eligibility, and progression requirements to be
+                confirmed.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section className="section container international">
+        <Globe2 size={35} />
+        <div>
+          <span className="eyebrow">A GLOBAL COMMUNITY</span>
+          <h2>International perspectives welcome.</h2>
+          <p>
+            We welcome interest from international candidates. International
+            eligibility, fee coverage, visa requirements, and funding
+            arrangements will be published with the confirmed application
+            guidance.
+          </p>
+          <Link className="text-link" to="/apply">
+            Applicant information <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+}
+function Students() {
+  const [cohort, setCohort] = useState(1);
+  return (
+    <>
+      <PageIntro eyebrow="Students" title="Our people. Our shared future.">
+        A growing community of researchers, connected by curiosity.
+      </PageIntro>
+      <section className="section container">
+        <span className="eyebrow">MEET THE COHORTS</span>
+        <h2>The next generation of RHI.</h2>
+        <div
+          className="cohort-tabs"
+          role="tablist"
+          aria-label="Student cohorts"
+        >
+          {[1, 2, 3].map((number) => (
+            <button
+              id={`cohort-tab-${number}`}
+              role="tab"
+              aria-selected={number === cohort}
+              aria-controls="cohort-panel"
+              tabIndex={number === cohort ? 0 : -1}
+              key={number}
+              onClick={() => setCohort(number)}
+              onKeyDown={(event) => {
+                const next = { ArrowRight: number % 3 + 1, ArrowLeft: (number + 1) % 3 + 1, Home: 1, End: 3 }[event.key];
+                if (next) {
+                  event.preventDefault();
+                  setCohort(next);
+                  document.getElementById(`cohort-tab-${next}`).focus();
+                }
+              }}
+            >
+              Cohort 0{number}
+              <span>{number === 1 ? "First intake" : "Future intake"}</span>
+            </button>
+          ))}
+        </div>
+        <div
+          id="cohort-panel"
+          role="tabpanel"
+          aria-labelledby={`cohort-tab-${cohort}`}
+          className="cohort-panel"
+        >
+          <Users size={40} />
+          <h3>
+            {cohort === 1
+              ? "Meet our first cohort soon."
+              : `Cohort 0${cohort} is on the horizon.`}
+          </h3>
+          <p>
+            {cohort === 1
+              ? "The first cohort has 11 planned studentships. Student profiles will appear here once recruitment and enrolment are complete."
+              : "Recruitment dates and student profiles for this future cohort will be announced in due course."}
+          </p>
+          {cohort === 1 && (
+            <Action to="/projects">Explore first-cohort studentships</Action>
+          )}
+        </div>
+      </section>
+    </>
+  );
+}
+function Projects() {
+  const [query, setQuery] = useState("");
+  const [theme, setTheme] = useState("");
+  const [university, setUniversity] = useState("");
+  const filtered = projects.filter(
+    (project) =>
+      (!theme || theme === project.theme) &&
+      (!university || university === project.university) &&
+      `${project.theme} ${project.university} studentship ${project.id}`
+        .toLowerCase()
+        .includes(query.toLowerCase()),
+  );
+  return (
+    <>
+      <PageIntro
+        eyebrow="PhD Projects"
+        title="11 opportunities. A world of possibility."
+      >
+        Explore the first cohort of Responsible Hybrid Intelligence
+        studentships.
+      </PageIntro>
+      <section className="section container">
+        <div className="notice">
+          <strong>First-cohort recruitment</strong>
+          <p>
+            11 studentships are planned. The entries below are placeholders, not
+            confirmed research projects. Titles, supervisors, host allocations,
+            funding terms, and application dates are awaiting approval.
+          </p>
+        </div>
+        <div className="filters">
+          <label className="search-field">
+            <span>Search projects</span>
+            <div>
+              <Search size={19} />
+              <input
+                type="search"
+                placeholder="Search by keyword…"
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+              />
+            </div>
+          </label>
+          <label>
+            <span>Research theme</span>
+            <select
+              value={theme}
+              onChange={(event) => setTheme(event.target.value)}
+            >
+              <option value="">All themes</option>
+              {themes.map((item) => (
+                <option key={item}>{item}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Host university</span>
+            <select
+              value={university}
+              onChange={(event) => setUniversity(event.target.value)}
+            >
+              <option value="">Both universities</option>
+              <option>University of Strathclyde</option>
+              <option>University of Glasgow</option>
+            </select>
+          </label>
+        </div>
+        <div className="results-heading">
+          <p aria-live="polite">
+            <strong>{filtered.length}</strong>{" "}
+            {filtered.length === 1 ? "studentship" : "studentships"}
+          </p>
+          {(query || theme || university) && (
+            <button
+              className="reset"
+              onClick={() => {
+                setQuery("");
+                setTheme("");
+                setUniversity("");
+              }}
+            >
+              Clear filters <X size={16} />
+            </button>
+          )}
+          <span>COHORT 01 · PROVISIONAL CATALOGUE</span>
+        </div>
+        <div className="projects-list">
+          {filtered.map((project) => (
+            <details className="project" key={project.id}>
+              <summary>
+                <span className="project-index">
+                  {String(project.id).padStart(2, "0")}
+                </span>
+                <div>
+                  <span className="project-theme">{project.theme}</span>
+                  <h2>
+                    RHI PhD studentship {String(project.id).padStart(2, "0")}
+                  </h2>
+                  <p>
+                    {project.university} <span>· Host to be confirmed</span>
+                  </p>
+                </div>
+                <span className="detail-toggle">
+                  <Plus className="plus" size={22} />
+                  <Minus className="minus" size={22} />
+                </span>
+              </summary>
+              <div className="project-content">
+                <span className="eyebrow">
+                  PROJECT DETAILS AWAITING CONFIRMATION
+                </span>
+                <p>{lorem}</p>
+                <dl>
+                  <div>
+                    <dt>Primary supervisor</dt>
+                    <dd>To be confirmed</dd>
+                  </div>
+                  <div>
+                    <dt>Research theme</dt>
+                    <dd>{project.theme} (indicative)</dd>
+                  </div>
+                  <div>
+                    <dt>Host university</dt>
+                    <dd>{project.university} (placeholder)</dd>
+                  </div>
+                  <div>
+                    <dt>Application deadline</dt>
+                    <dd>To be announced</dd>
+                  </div>
+                </dl>
+                <Action to="/apply">View application information</Action>
+              </div>
+            </details>
+          ))}
+        </div>
+        {!filtered.length && (
+          <div className="empty">
+            <Search size={32} />
+            <h2>No matching studentships</h2>
+            <p>Try another keyword or clear the filters.</p>
+          </div>
+        )}
+      </section>
+    </>
+  );
+}
+function Apply() {
+  return (
+    <>
+      <PageIntro eyebrow="How to Apply" title="Bring your curiosity.">
+        Your next step towards Responsible Hybrid Intelligence.
+      </PageIntro>
+      <section className="section container apply-layout">
+        <div>
+          <span className="eyebrow">COHORT 01 · 11 STUDENTSHIPS</span>
+          <h2>Start your research journey.</h2>
+          <p className="lead">
+            The programme is preparing its first intake of doctoral researchers.
+          </p>
+          <div className="notice">
+            <strong>Application guidance is being finalised.</strong>
+            <p>
+              No application form is live on this website yet. Opening dates,
+              deadlines, eligibility, stipend, fee coverage, and the official
+              submission route will be published once confirmed.
+            </p>
+          </div>
+          <h3>Before you apply</h3>
+          <ol className="steps">
+            <li>
+              <h3>Explore the programme</h3>
+              <p>
+                Learn about the RHI vision and the PhD and proposed Master’s
+                Plus PhD pathways.
+              </p>
+            </li>
+            <li>
+              <h3>Find your research direction</h3>
+              <p>
+                Browse the provisional studentships catalogue. Final project
+                briefs and supervisors are still to be confirmed.
+              </p>
+            </li>
+            <li>
+              <h3>Check the final guidance</h3>
+              <p>
+                Wait for approved eligibility criteria, required documents, and
+                official university application links before submitting.
+              </p>
+            </li>
+          </ol>
+          <Action to="/projects">Browse studentships</Action>
+        </div>
+        <aside>
+          <Globe2 size={30} />
+          <h3>International applicants</h3>
+          <p>
+            We welcome your interest. Funding eligibility, overseas fees,
+            English-language requirements, and visa guidance remain to be
+            confirmed.
+          </p>
+          <hr />
+          <h3>Programme enquiries</h3>
+          <p>
+            Contact the programme leadership through their official university
+            profiles.
+          </p>
+          <a
+            className="text-link"
+            href="https://www.strath.ac.uk/staff/moshfeghiyashardr/"
+          >
+            Programme Director <ArrowUpRight size={16} />
+          </a>
+          <a
+            className="text-link"
+            href="https://www.gla.ac.uk/schools/psychologyneuroscience/staff/simonhanslmayr/"
+          >
+            Deputy Director <ArrowUpRight size={16} />
+          </a>
+        </aside>
+      </section>
+    </>
+  );
+}
+function Contact() {
+  return (
+    <>
+      <PageIntro eyebrow="Contact" title="Let’s connect.">
+        Responsible Hybrid Intelligence at Strathclyde and Glasgow.
+      </PageIntro>
+      <section className="section container prose">
+        <h2>Programme enquiries</h2>
+        <p>
+          A dedicated programme email address will be added once confirmed. In
+          the meantime, contact the programme leadership through their official
+          university pages.
+        </p>
+        <div className="directors">
+          <article>
+            <h3>Dr Yashar Moshfeghi</h3>
+            <p>Programme Director · University of Strathclyde</p>
+            <a
+              className="text-link"
+              href="https://www.strath.ac.uk/staff/moshfeghiyashardr/"
+            >
+              University profile <ArrowUpRight size={18} />
+            </a>
+          </article>
+          <article>
+            <h3>Professor Simon Hanslmayr</h3>
+            <p>Deputy Director · University of Glasgow</p>
+            <a
+              className="text-link"
+              href="https://www.gla.ac.uk/schools/psychologyneuroscience/staff/simonhanslmayr/"
+            >
+              University profile <ArrowUpRight size={18} />
+            </a>
+          </article>
+        </div>
+      </section>
+    </>
+  );
+}
+function Site() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+    const titles = {
+      "/": "Responsible Hybrid Intelligence",
+      "/about": "About RHI",
+      "/programme": "PhD Programme",
+      "/students": "Students",
+      "/projects": "PhD Projects",
+      "/apply": "How to Apply",
+      "/contact": "Contact",
+    };
+    document.title = `${titles[location.pathname] || "Page not found"} | Leverhulme Doctoral Programme`;
+    if (location.hash)
+      requestAnimationFrame(() =>
+        document.getElementById(location.hash.slice(1))?.scrollIntoView(),
+      );
+    else window.scrollTo(0, 0);
+  }, [location]);
+  const navigation = [
+    ["/", "Home"],
+    ["/about", "About"],
+    ["/students", "Students"],
+    ["/programme", "PhD Programme"],
+    ["/projects", "PhD Projects"],
+  ];
+  return (
+    <>
+      <a className="skip-link" href="#main" onClick={(event) => {
+        event.preventDefault();
+        document.getElementById("main").focus();
+      }}>
+        Skip to main content
+      </a>
+      <div className="utility">
+        <div className="container">
+          <span>A LEVERHULME TRUST DOCTORAL PROGRAMME</span>
+          <Link to="/contact">
+            Get in touch <ArrowUpRight size={13} />
+          </Link>
+        </div>
+      </div>
+      <header className="header">
+        <div className="container header-inner">
+          <Link
+            to="/"
+            className="brand"
+            aria-label="RHI home"
+            onClick={() => setMenuOpen(false)}
+          >
+            <img
+              className="brand-logo"
+              src={imagePath("Logo-Circle-2.webp")}
+              alt=""
+              width="72"
+              height="72"
+            />
+            <span className="brand-name">
+              Responsible
+              <br />
+              Hybrid Intelligence
+            </span>
+          </Link>
+          <button
+            className="mobile-toggle"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={menuOpen}
+            aria-controls="navigation"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X /> : <Menu />}
+          </button>
+          <nav
+            id="navigation"
+            className={menuOpen ? "open" : ""}
+            aria-label="Main navigation"
+          >
+            {navigation.map(([to, name]) => (
+              <NavLink key={to} to={to} end onClick={() => setMenuOpen(false)}>
+                {name}
+              </NavLink>
+            ))}
+            <NavLink
+              to="/apply"
+              className="nav-apply"
+              onClick={() => setMenuOpen(false)}
+            >
+              How to Apply <ArrowUpRight size={17} />
+            </NavLink>
+          </nav>
+        </div>
+      </header>
+      <main id="main" tabIndex={-1}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/programme" element={<Programme />} />
+          <Route path="/students" element={<Students />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/apply" element={<Apply />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route
+            path="*"
+            element={
+              <section className="section container">
+                <h1>Page not found</h1>
+                <Action to="/">Return home</Action>
+              </section>
+            }
+          />
+        </Routes>
+      </main>
+      <section className="partners">
+        <div className="container partners-inner">
+          <span className="eyebrow">
+            A SHARED{" "}
+            <br />
+            COMMITMENT
+          </span>
+          <a
+            className="university-wordmark strath"
+            href="https://www.strath.ac.uk/"
+          >
+            <img src={imagePath("strathclyde-logo.png")} alt="University of Strathclyde Glasgow" width="205" height="75" loading="lazy" />
+          </a>
+          <a
+            className="university-wordmark glasgow"
+            href="https://www.gla.ac.uk/"
+          >
+            <img src={imagePath("glasgow-logo.svg")} alt="University of Glasgow" width="205" height="75" loading="lazy" />
+          </a>
+          <a href="https://www.leverhulme.ac.uk/">
+            <img
+              src={imagePath("leverhulme.png")}
+              alt="The Leverhulme Trust"
+              width="215"
+              height="76"
+              loading="lazy"
+            />
+          </a>
+        </div>
+      </section>
+      <footer>
+        <div className="container footer-main">
+          <div>
+            <Link to="/" className="brand footer-brand">
+              <img
+                className="brand-logo"
+                src={imagePath("logo-circle.webp")}
+                alt=""
+                width="64"
+                height="64"
+                loading="lazy"
+              />
+              <span className="brand-name">
+                Responsible
+                <br />
+                Hybrid Intelligence
+              </span>
+            </Link>
+            <p>
+              Human potential. Intelligent systems.
+              <br />A responsible future, together.
+            </p>
+          </div>
+          <div className="footer-links">
+            <Link to="/about">About the programme</Link>
+            <Link to="/programme">PhD Programme</Link>
+            <Link to="/students">Our students</Link>
+          </div>
+          <div className="footer-links">
+            <Link to="/projects">PhD studentships</Link>
+            <Link to="/apply">How to Apply</Link>
+            <Link to="/contact">Contact</Link>
+          </div>
+          <div className="footer-cta">
+            <span>YOUR NEXT CHAPTER</span>
+            <Action to="/projects" light>
+              Explore the opportunities
+            </Action>
+          </div>
+        </div>
+        <div className="container footer-bottom">
+          <span>
+            © {copyrightYear} Responsible Hybrid Intelligence
+          </span>
+          <span>University of Strathclyde × University of Glasgow</span>
+          <a href="https://www.strath.ac.uk/websiteprivacynotice/">
+            University privacy notice <ArrowUpRight size={13} />
+          </a>
+          <a href="https://commons.wikimedia.org/wiki/File:Cloisters,_University_Of_Glasgow.jpg">Campus photo: LornaMCampbell, CC BY-SA 4.0</a>
+        </div>
+      </footer>
+    </>
+  );
+}
+export default function App() {
+  return (
+    <SiteRouter>
+      <Site />
+    </SiteRouter>
+  );
+}
