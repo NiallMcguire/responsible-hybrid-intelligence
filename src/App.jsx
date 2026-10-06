@@ -355,7 +355,7 @@ function About() {
         <span className="eyebrow">OUR PEOPLE</span>
         <h2>A genuinely interdisciplinary team.</h2>
         <p className="lead">
-          Led by Dr Yashar Moshfeghi and Professor Simon Hanslmayr, our team brings
+          Led by Professor Yashar Moshfeghi and Professor Simon Hanslmayr, our team brings
           together the expertise and perspectives that have shaped the programme
           from its earliest conception.
         </p>
@@ -364,13 +364,13 @@ function About() {
             <img
               className="team-portrait"
               src={imagePath("yashar-moshfeghi.webp")}
-              alt="Dr Yashar Moshfeghi"
+              alt="Professor Yashar Moshfeghi"
               width="180"
               height="180"
               loading="lazy"
             />
             <span>PROGRAMME DIRECTOR</span>
-            <h3>Dr Yashar Moshfeghi</h3>
+            <h3>Professor Yashar Moshfeghi</h3>
             <p>University of Strathclyde</p>
             <a
               className="text-link"
