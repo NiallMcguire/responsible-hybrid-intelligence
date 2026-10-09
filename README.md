@@ -21,15 +21,19 @@ npm run preview
 
 ## Editing
 
-Pages: Home, About, Students (cohorts 1-3), PhD Programme, PhD Projects, How to Apply, and Contact. Projects support keyword search, combined theme/university filters, expandable details, and empty results. Cohort tabs support arrow keys, Home, and End.
+Main navigation: Home, Themes, About, Students, PhD Programmes, Masters + Programmes, and a prominent blue Apply button leading to the opportunity catalogue. How to Apply and Contact remain available through the footer. Themes covers co-adaptation, agency, and grounding, separately from About. Masters+ has its own pathway page and is not mentioned in the PhD page content.
+
+The proposal catalogue contains three Masters+ opportunities and eight PhD scholarships. The first three placeholder entries are provisionally assigned Masters+; replace these assignments when the approved catalogue arrives. Projects support keyword search, combined pathway/theme/university filters, expandable details, and empty results. Supervisor and host information and an Apply link are visible without expanding. Each Apply link leads to that opportunity's own page at `/projects/1` through `/projects/11`; individual opportunities are not linked from the main navigation. These are public pages, not access-controlled pages, and no submission form is live.
+
+Only Cohort 1 is visible by default. To re-enable Cohorts 2 and 3, set `VITE_SHOW_FUTURE_COHORTS=true` in a local `.env` file or the build environment, then restart the dev server or rebuild. Cohort tabs support arrow keys, Home, and End for the visible cohorts.
 
 Content and project data are in `src/App.jsx`. Global styles are in `src/index.css`; layouts are in `src/App.css`. Images and logos are hosted locally in `public/images`.
 
 ## Before publication
 
-- Replace the 11 placeholder projects and Lorem ipsum descriptions with approved briefs, supervisors, themes, and university allocations. The draft's alternating 6/5 host allocations are placeholders, not a promised recruitment split. The supplied 50/50 figure describes the overall partnership.
+- Replace the 11 placeholder projects with approved briefs, supervisors, pathway assignments, themes, and university allocations. The draft's alternating 6/5 host allocations are placeholders, not a promised recruitment split. The supplied 50/50 figure describes the overall partnership. Theme descriptions are draft explanatory copy and need approval.
 - Confirm application dates, eligibility, duration, stipend, home/international fee coverage, visa/language requirements, and official application links.
-- Confirm the Master’s Plus PhD pathway and cohort dates. Student profiles have not been invented.
+- Confirm Master's courses, modules, duration, funding, entry criteria, progression requirements, and cohort dates. The Masters+ page describes the pathway without promising unapproved terms. Student profiles have not been invented.
 - Add the approved programme email, accessibility/privacy statements, and institutional branding approvals. The privacy link currently points to Strathclyde's notice, not a bespoke website policy.
 - Confirm usage rights for the supplied RHI artwork. Review institutional logo and Trust acknowledgement requirements before launch.
 - Funding headlines use the £5 million Leverhulme Trust award. The pasted programme announcement separately identifies £4.1 million of university investment; do not describe the combined figure as studentship funding.
@@ -63,8 +67,8 @@ For hosting outside GitHub Pages, run `npm run build` and deploy `dist`. The nor
 
 ## Assets
 
-- RHI artwork: user-supplied WebP assets. The homepage uses `logo-banner-3.webp`, capped at its 1024px native width rather than enlarged to fill the hero; a higher-resolution source is needed for a full-bleed photograph-quality background. Inner-page headings use `logo-banner-4.webp`. Header and footer marks use `Logo-Circle-2.webp` and `logo-circle.webp`. Confirm attribution and usage rights with the programme before publication.
+- RHI artwork: user-supplied WebP assets. All page banners use `logo-banner-3.webp` over a consistent blue background. The homepage artwork is capped at its 1024px native width; a higher-resolution source is needed for a full-bleed photograph-quality background. Header and footer marks use `Logo-Circle-2.webp` and `logo-circle.webp`. Confirm attribution and usage rights with the programme before publication.
 - Unused research photo retained in the image folder: National Cancer Institute, Unsplash, image ID `1579154204601-01588f351e67`, under the Unsplash licence. It is no longer displayed on the website.
-- Campus photo: LornaMCampbell, [Cloisters, University Of Glasgow](https://commons.wikimedia.org/wiki/File:Cloisters,_University_Of_Glasgow.jpg), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). A 960px version is displayed with CSS cropping. Attribution is linked in the footer; distributed adaptations remain subject to the licence.
+- Glasgow skyline: Giuseppe Milo, [Clyde arch, Glasgow, Scotland](https://www.flickr.com/photos/giuseppemilo/16331067284/), [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/), also [documented on Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Clyde_Arc_at_night.jpg). A 1024px image is hosted locally as `glasgow-clyde-skyline.jpg` and displayed with CSS cropping. The footer links the author/source and licence. The previous rooftop skyline and campus photographs are retained but not displayed.
 - Trust logo: official asset at `https://www.leverhulme.ac.uk/sites/default/files/Leverhulme_Trust_RGB_blue_0_0.png`.
 - University logos: institutional marks served by AQT at `https://www.aqt.ac.uk/wp-content/uploads/2024/10/logo-uos.png` and `https://www.aqt.ac.uk/wp-content/uploads/2024/10/logo-uog.svg`. Marks remain the property of their institutions.

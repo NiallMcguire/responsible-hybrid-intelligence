@@ -7,6 +7,7 @@ import {
   Route,
   Routes,
   useLocation,
+  useParams,
 } from "react-router-dom";
 import {
   ArrowUpRight,
@@ -27,18 +28,21 @@ import "./App.css";
 const SiteRouter = import.meta.env.MODE === "github-pages" ? HashRouter : BrowserRouter;
 const imagePath = (filename) => `${import.meta.env.BASE_URL}images/${filename}`;
 const copyrightYear = new Date().getFullYear();
+const visibleCohorts = import.meta.env.VITE_SHOW_FUTURE_COHORTS === "true" ? [1, 2, 3] : [1];
 const themes = [
-  "AI & human collaboration",
-  "Neuroscience & neurotechnology",
-  "Responsibility & society",
+  "Co-adaptation",
+  "Agency",
+  "Grounding",
 ];
 const themeDescriptions = [
-  "Understanding how humans and intelligent systems can learn and adapt together, enhancing human capability while keeping people at the centre of the collaboration.",
-  "Bringing neuroscience, neurotechnology, psychology, and engineering together to understand the relationship between human intelligence and intelligent systems.",
-  "Drawing on philosophy and law to explore how hybrid intelligence can develop safely and responsibly, preserving autonomy, agency, and accountability.",
+  "How do people and intelligent systems learn and adapt together? We explore how their interaction changes over time, and how this mutual adaptation can support human capability.",
+  "How can people retain autonomy and meaningful control when working with intelligent systems? We examine intention, decision-making, responsibility, and accountability in human-AI collaboration.",
+  "How can intelligent systems connect to human experience and the world? We bring together perspectives on perception, cognition, embodiment, and context to investigate shared understanding.",
 ];
 const projects = Array.from({ length: 11 }, (_, index) => ({
   id: index + 1,
+  pathway: index < 3 ? "Masters+" : "PhD scholarship",
+  supervisor: "To be confirmed",
   theme: themes[index % 3],
   university: index % 2 ? "University of Glasgow" : "University of Strathclyde",
 }));
@@ -54,9 +58,6 @@ const team = [
   { name: "Dr Brianna Vandrey", university: "University of Glasgow", photo: "1695656485944.jpg", profile: "https://www.gla.ac.uk/schools/psychologyneuroscience/staff/briannavandrey/" },
   { name: "Professor Patricia Connolly", university: "University of Strathclyde", photo: "patricia-connolly.webp", profile: "https://www.strath.ac.uk/staff/connollypatriciaprof/" },
 ];
-const lorem =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-
 function Action({ to, children, light = false }) {
   return (
     <Link className={`action ${light ? "light" : ""}`} to={to}>
@@ -67,7 +68,7 @@ function Action({ to, children, light = false }) {
 }
 function PageIntro({ eyebrow, title, children }) {
   return (
-    <section className="page-intro">
+    <section className="page-intro" style={{ "--banner-image": `url("${imagePath("logo-banner-3.webp")}")` }}>
       <div className="container">
         <div className="breadcrumb">
           <Link to="/">Home</Link>
@@ -95,19 +96,19 @@ function Home() {
         <div className="container hero-content">
           <div className="hero-kicker">
             <span />
-            PHD RECRUITMENT · COHORT 01
+            RESEARCH OPPORTUNITIES · COHORT 01
           </div>
           <h1>
             Responsible
             <br />
             Hybrid Intelligence<span className="title-dot">.</span>
           </h1>
-          <h2 className="hero-recruiting">We’re recruiting 11 PhD researchers.</h2>
+          <h2 className="hero-recruiting">11 opportunities. Two research pathways.</h2>
           <p>Join our first cohort at Strathclyde and Glasgow.</p>
           <div className="hero-actions">
-            <Action to="/projects" light>View the 11 PhD studentships</Action>
-            <Link className="hero-programme-link" to="/programme">
-              About the programme <ArrowRight size={18} />
+            <Action to="/projects" light>View all 11 opportunities</Action>
+            <Link className="hero-programme-link" to="/themes">
+              Explore our themes <ArrowRight size={18} />
             </Link>
           </div>
         </div>
@@ -116,7 +117,7 @@ function Home() {
         <div className="container recruitment-inner">
           <div className="recruitment-label">
             <span className="status-dot" />
-            PHD RECRUITMENT
+            FIRST-COHORT RECRUITMENT
           </div>
           <div>
             <h2>Your PhD. A new field. A shared future.</h2>
@@ -203,16 +204,16 @@ function Home() {
                 View PhD projects <ArrowUpRight size={21} />
               </span>
             </Link>
-            <Link className="path-item" to="/programme#masters">
+            <Link className="path-item" to="/masters">
               <span className="path-number">02 / TRAINING</span>
               <GraduationCap />
-              <h3>More than a PhD</h3>
+              <h3>Masters+ pathway</h3>
               <p>
-                A community-led programme connecting disciplines, perspectives,
-                and two leading universities.
+                Explore a Master's-to-doctoral research pathway within our
+                interdisciplinary community.
               </p>
               <span className="path-link">
-                Our training pathways <ArrowUpRight size={21} />
+                Explore Masters+ <ArrowUpRight size={21} />
               </span>
             </Link>
             <Link className="path-item" to="/students">
@@ -240,7 +241,7 @@ function Home() {
           </h2>
           <div className="theme-list">
             {themes.map((theme, index) => (
-              <Link to="/about#themes" key={theme}>
+              <Link to={`/themes#theme-${index + 1}`} key={theme}>
                 <span>0{index + 1}</span>
                 {theme}
                 <ArrowUpRight size={22} />
@@ -258,8 +259,8 @@ function Home() {
         </div>
         <div className="news-layout">
           <img
-            src={imagePath("glasgow.jpg")}
-            alt="University architecture in Glasgow"
+            src={imagePath("glasgow-clyde-skyline.jpg")}
+            alt="Glasgow skyline with the illuminated Clyde Arc, Finnieston Crane, and reflections on the River Clyde"
             loading="lazy"
           />
           <div>
@@ -327,30 +328,6 @@ function About() {
           curiosity-driven research into a responsible future for hybrid intelligence.
         </p>
       </section>
-      <section id="themes" className="section paths">
-        <div className="container">
-          <span className="eyebrow">RESEARCH DIRECTIONS</span>
-          <h2>Across disciplines. Beyond boundaries.</h2>
-          <p className="muted">
-            Indicative groupings; formal research themes to be confirmed.
-          </p>
-          <div className="path-grid">
-            {themes.map((theme, index) => (
-              <article className="path-item" key={theme}>
-                {index === 0 ? (
-                  <BrainCircuit />
-                ) : index === 1 ? (
-                  <GraduationCap />
-                ) : (
-                  <Scale />
-                )}
-                <h3>{theme}</h3>
-                <p>{themeDescriptions[index]}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
       <section className="section container">
         <span className="eyebrow">OUR PEOPLE</span>
         <h2>A genuinely interdisciplinary team.</h2>
@@ -413,6 +390,98 @@ function About() {
     </>
   );
 }
+function Themes() {
+  return (
+    <>
+      <PageIntro eyebrow="Themes" title="Co-adaptation. Agency. Grounding.">
+        The research questions at the heart of Responsible Hybrid Intelligence.
+      </PageIntro>
+      <section className="section container prose">
+        <h2>What the programme explores</h2>
+        <p className="lead">Understanding human and artificial intelligence together, rather than in isolation.</p>
+        <p>
+          Responsible Hybrid Intelligence investigates how people and intelligent
+          systems can work, learn, and adapt together while preserving human
+          autonomy and accountability. The programme connects AI, neuroscience,
+          neurotechnology, psychology, engineering, philosophy, and law across
+          Strathclyde and Glasgow.
+        </p>
+        <p>
+          Three connected themes frame this work: how humans and systems change
+          through interaction, who retains control and responsibility, and how
+          intelligence is grounded in experience and context.
+        </p>
+      </section>
+      <section className="section paths">
+        <div className="container path-grid">
+          {themes.map((theme, index) => (
+            <article className="path-item" id={`theme-${index + 1}`} key={theme}>
+              {index === 0 ? <BrainCircuit /> : index === 1 ? <Scale /> : <Globe2 />}
+              <h2>{theme}</h2>
+              <p>{themeDescriptions[index]}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="section container prose">
+        <h2>Connected questions. Different pathways.</h2>
+        <p>Explore the doctoral programme or the Masters+ pathway, then browse the individual research opportunities.</p>
+        <div className="hero-actions">
+          <Action to="/programme">PhD programme</Action>
+          <Action to="/masters">Masters+</Action>
+        </div>
+      </section>
+    </>
+  );
+}
+function Masters() {
+  return (
+    <>
+      <PageIntro eyebrow="Masters+" title="A foundation for doctoral discovery.">
+        A Master's-to-PhD pathway in Responsible Hybrid Intelligence.
+      </PageIntro>
+      <section className="section container prose">
+        <span className="eyebrow">MASTERS+ PATHWAY</span>
+        <h2>Preparation for interdisciplinary research</h2>
+        <p className="lead">Three of the first cohort's 11 opportunities are Masters+ places. The remaining eight are PhD scholarships.</p>
+        <p>
+          Masters+ combines a Master's stage with a route towards doctoral
+          research. It offers a preparatory stage before a PhD in a programme
+          that spans human intelligence, intelligent systems, and responsible
+          innovation.
+        </p>
+        <h3>The Master's stage</h3>
+        <p>
+          The Master's stage provides a foundation for the proposed doctoral
+          research. The specific degree, taught modules, research component,
+          duration, and host university will be published with each approved
+          opportunity. These may differ between opportunities.
+        </p>
+        <h3>Progression to a PhD</h3>
+        <p>
+          Progression requirements and the relationship between the Master's
+          and PhD stages will be set out in the final offer and application
+          guidance. Progression should not be assumed to be automatic.
+        </p>
+        <h3>Eligibility and funding</h3>
+        <p>
+          Entry qualifications, selection criteria, tuition-fee coverage,
+          maintenance support, and home and international eligibility are
+          awaiting confirmation. Check the individual opportunity's approved
+          terms before applying.
+        </p>
+        <div className="notice">
+          <strong>Detailed guidance is being finalised.</strong>
+          <p>Opportunity titles, Master's courses, supervisors, deadlines, and official application links will be published once approved.</p>
+        </div>
+        <div className="hero-actions">
+          <Action to="/projects?pathway=masters">View Masters+ opportunities</Action>
+          <Link className="text-link" to="/programme">Explore the PhD pathway <ArrowRight size={18} /></Link>
+        </div>
+      </section>
+    </>
+  );
+}
 function Programme() {
   return (
     <>
@@ -445,13 +514,13 @@ function Programme() {
             complementary strengths of both institutions. Individual project
             allocations will be confirmed with the final project catalogue.
           </p>
-          <Action to="/projects">Explore the 11 studentships</Action>
+          <Action to="/projects?pathway=phd">Explore the eight PhD scholarships</Action>
         </div>
       </section>
-      <section className="section paths" id="masters">
+      <section className="section paths">
         <div className="container">
-          <span className="eyebrow">PROGRAMME PATHWAYS</span>
-          <div className="directors">
+          <span className="eyebrow">DOCTORAL RESEARCH</span>
+          <div className="prose">
             <article>
               <GraduationCap />
               <h2>PhD programme</h2>
@@ -459,19 +528,9 @@ function Programme() {
                 Doctoral research within the Responsible Hybrid Intelligence
                 programme.
               </p>
-              <p>{lorem}</p>
+              <p>Investigate questions spanning co-adaptation, agency, and grounding, within a community connecting human intelligence, intelligent systems, and society.</p>
               <p className="muted">
                 Duration, training schedule, and funding terms to be confirmed.
-              </p>
-            </article>
-            <article>
-              <GraduationCap />
-              <h2>Master’s Plus PhD</h2>
-              <p>A proposed Master’s-to-doctoral research pathway.</p>
-              <p>{lorem}</p>
-              <p className="muted">
-                Availability, eligibility, and progression requirements to be
-                confirmed.
               </p>
             </article>
           </div>
@@ -497,7 +556,7 @@ function Programme() {
   );
 }
 function Students() {
-  const [cohort, setCohort] = useState(1);
+  const [cohort, setCohort] = useState(visibleCohorts[0]);
   return (
     <>
       <PageIntro eyebrow="Students" title="Our people. Our shared future.">
@@ -511,7 +570,7 @@ function Students() {
           role="tablist"
           aria-label="Student cohorts"
         >
-          {[1, 2, 3].map((number) => (
+          {visibleCohorts.map((number, index) => (
             <button
               id={`cohort-tab-${number}`}
               role="tab"
@@ -521,7 +580,12 @@ function Students() {
               key={number}
               onClick={() => setCohort(number)}
               onKeyDown={(event) => {
-                const next = { ArrowRight: number % 3 + 1, ArrowLeft: (number + 1) % 3 + 1, Home: 1, End: 3 }[event.key];
+                const next = {
+                  ArrowRight: visibleCohorts[(index + 1) % visibleCohorts.length],
+                  ArrowLeft: visibleCohorts[(index + visibleCohorts.length - 1) % visibleCohorts.length],
+                  Home: visibleCohorts[0],
+                  End: visibleCohorts[visibleCohorts.length - 1],
+                }[event.key];
                 if (next) {
                   event.preventDefault();
                   setCohort(next);
@@ -560,35 +624,47 @@ function Students() {
   );
 }
 function Projects() {
+  const location = useLocation();
+  const pathway = new URLSearchParams(location.search).get("pathway");
   const [query, setQuery] = useState("");
   const [theme, setTheme] = useState("");
   const [university, setUniversity] = useState("");
   const filtered = projects.filter(
     (project) =>
+      (pathway !== "masters" || project.pathway === "Masters+") &&
+      (pathway !== "phd" || project.pathway === "PhD scholarship") &&
       (!theme || theme === project.theme) &&
       (!university || university === project.university) &&
-      `${project.theme} ${project.university} studentship ${project.id}`
+      `${project.theme} ${project.university} ${project.supervisor} ${project.pathway} studentship ${project.id}`
         .toLowerCase()
         .includes(query.toLowerCase()),
   );
   return (
     <>
       <PageIntro
-        eyebrow="PhD Projects"
+        eyebrow="PhD Proposals"
         title="11 opportunities. A world of possibility."
       >
-        Explore the first cohort of Responsible Hybrid Intelligence
-        studentships.
+        Three Masters+ opportunities and eight PhD scholarships in Responsible
+        Hybrid Intelligence.
       </PageIntro>
       <section className="section container">
         <div className="notice">
           <strong>First-cohort recruitment</strong>
           <p>
-            11 studentships are planned. The entries below are placeholders, not
+            The first cohort comprises three Masters+ opportunities and eight PhD
+            scholarships. The entries below are placeholders, not
             confirmed research projects. Titles, supervisors, host allocations,
-            funding terms, and application dates are awaiting approval.
+            funding terms, and application dates are awaiting approval. The first
+            three entries are provisionally marked Masters+; allocation to
+            individual projects is still to be confirmed.
           </p>
         </div>
+        <nav className="pathway-tabs" aria-label="Opportunity pathways">
+          <Link to="/projects" aria-current={!['masters', 'phd'].includes(pathway) ? "page" : undefined}>All opportunities</Link>
+          <Link to="/projects?pathway=phd" aria-current={pathway === "phd" ? "page" : undefined}>PhD scholarships</Link>
+          <Link to="/projects?pathway=masters" aria-current={pathway === "masters" ? "page" : undefined}>Masters+</Link>
+        </nav>
         <div className="filters">
           <label className="search-field">
             <span>Search projects</span>
@@ -647,20 +723,20 @@ function Projects() {
         </div>
         <div className="projects-list">
           {filtered.map((project) => (
-            <details className="project" key={project.id}>
-              <summary>
-                <span className="project-index">
-                  {String(project.id).padStart(2, "0")}
-                </span>
+            <article className="project" key={project.id}>
+              <div className="project-overview">
+                <span className="project-index">{String(project.id).padStart(2, "0")}</span>
                 <div>
-                  <span className="project-theme">{project.theme}</span>
-                  <h2>
-                    RHI PhD studentship {String(project.id).padStart(2, "0")}
-                  </h2>
-                  <p>
-                    {project.university} <span>· Host to be confirmed</span>
-                  </p>
+                  <span className="project-theme">{project.theme} · {project.pathway} (provisional)</span>
+                  <h2>RHI {project.pathway} opportunity {String(project.id).padStart(2, "0")}</h2>
+                  <p><strong>Lead supervisor:</strong> {project.supervisor}</p>
+                  <p><strong>Based at:</strong> {project.university} (placeholder; host to be confirmed)</p>
                 </div>
+                <Action to={`/projects/${project.id}`}>Apply</Action>
+              </div>
+              <details>
+              <summary>
+                <span>Research overview</span>
                 <span className="detail-toggle">
                   <Plus className="plus" size={22} />
                   <Minus className="minus" size={22} />
@@ -670,11 +746,11 @@ function Projects() {
                 <span className="eyebrow">
                   PROJECT DETAILS AWAITING CONFIRMATION
                 </span>
-                <p>{lorem}</p>
+                <p>The approved research brief for this {project.pathway} opportunity will appear here. Its current research grouping is {project.theme.toLowerCase()}.</p>
                 <dl>
                   <div>
                     <dt>Primary supervisor</dt>
-                    <dd>To be confirmed</dd>
+                    <dd>{project.supervisor}</dd>
                   </div>
                   <div>
                     <dt>Research theme</dt>
@@ -689,9 +765,9 @@ function Projects() {
                     <dd>To be announced</dd>
                   </div>
                 </dl>
-                <Action to="/apply">View application information</Action>
               </div>
-            </details>
+              </details>
+            </article>
           ))}
         </div>
         {!filtered.length && (
@@ -701,6 +777,43 @@ function Projects() {
             <p>Try another keyword or clear the filters.</p>
           </div>
         )}
+      </section>
+    </>
+  );
+}
+function Opportunity() {
+  const { projectId } = useParams();
+  const project = projects.find((item) => String(item.id) === projectId);
+  if (!project) {
+    return <section className="section container"><h1>Opportunity not found</h1><Action to="/projects">Return to proposals</Action></section>;
+  }
+  return (
+    <>
+      <PageIntro eyebrow={project.pathway} title={`RHI ${project.pathway} opportunity ${String(project.id).padStart(2, "0")}`}>
+        {project.theme} · First-cohort opportunity
+      </PageIntro>
+      <section className="section container prose opportunity-page">
+        <h2>Opportunity details</h2>
+        <dl>
+          <div><dt>Pathway</dt><dd>{project.pathway} (provisional allocation)</dd></div>
+          <div><dt>Lead supervisor</dt><dd>{project.supervisor}</dd></div>
+          <div><dt>Based at</dt><dd>{project.university} (placeholder; host to be confirmed)</dd></div>
+          <div><dt>Research theme</dt><dd>{project.theme} (indicative)</dd></div>
+          <div><dt>Application deadline</dt><dd>To be announced</dd></div>
+          <div><dt>Funding and eligibility</dt><dd>Awaiting approved terms</dd></div>
+        </dl>
+        <h2>Research proposal</h2>
+        <p>The full title, research questions, methods, and supervisory team will be published here when the project brief is approved.</p>
+        {project.pathway === "Masters+" && <p>This entry is provisionally assigned to the Masters+ pathway. The Master's course and PhD progression requirements remain to be confirmed.</p>}
+        <h2>Apply for this opportunity</h2>
+        <div className="notice">
+          <strong>Applications are not yet open on this website.</strong>
+          <p>The official university application link, required documents, selection criteria, and deadline for this specific opportunity will appear here once confirmed. No application is submitted by visiting this page.</p>
+        </div>
+        <div className="hero-actions">
+          <Action to={project.pathway === "Masters+" ? "/masters" : "/programme"}>Explore this pathway</Action>
+          <Link className="text-link" to="/apply">General application guidance <ArrowRight size={18} /></Link>
+        </div>
       </section>
     </>
   );
@@ -731,8 +844,8 @@ function Apply() {
             <li>
               <h3>Explore the programme</h3>
               <p>
-                Learn about the RHI vision and the PhD and proposed Master’s
-                Plus PhD pathways.
+                Learn about the RHI themes, PhD scholarships, and Masters+
+                pathway.
               </p>
             </li>
             <li>
@@ -830,12 +943,16 @@ function Site() {
       "/": "Responsible Hybrid Intelligence",
       "/about": "About RHI",
       "/programme": "PhD Programme",
+      "/themes": "Themes",
+      "/masters": "Masters+",
       "/students": "Students",
-      "/projects": "PhD Projects",
+      "/projects": "PhD Proposals",
       "/apply": "How to Apply",
       "/contact": "Contact",
     };
-    document.title = `${titles[location.pathname] || "Page not found"} | Leverhulme Doctoral Programme`;
+    const opportunity = projects.find((project) => location.pathname === `/projects/${project.id}`);
+    const title = opportunity ? `RHI ${opportunity.pathway} opportunity ${String(opportunity.id).padStart(2, "0")}` : titles[location.pathname];
+    document.title = `${title || "Page not found"} | Leverhulme Doctoral Programme`;
     if (location.hash)
       requestAnimationFrame(() =>
         document.getElementById(location.hash.slice(1))?.scrollIntoView(),
@@ -844,10 +961,12 @@ function Site() {
   }, [location]);
   const navigation = [
     ["/", "Home"],
+    ["/themes", "Themes"],
     ["/about", "About"],
     ["/students", "Students"],
-    ["/programme", "PhD Programme"],
-    ["/projects", "PhD Projects"],
+    ["/programme", "PhD Programmes"],
+    ["/masters", "Masters + Programmes"],
+    ["/projects", "Apply"],
   ];
   return (
     <>
@@ -901,17 +1020,11 @@ function Site() {
             aria-label="Main navigation"
           >
             {navigation.map(([to, name]) => (
-              <NavLink key={to} to={to} end onClick={() => setMenuOpen(false)}>
+              <NavLink key={to} to={to} end={to !== "/projects"} className={to === "/projects" ? "nav-apply" : undefined} onClick={() => setMenuOpen(false)}>
                 {name}
+                {to === "/projects" && <ArrowUpRight size={17} />}
               </NavLink>
             ))}
-            <NavLink
-              to="/apply"
-              className="nav-apply"
-              onClick={() => setMenuOpen(false)}
-            >
-              How to Apply <ArrowUpRight size={17} />
-            </NavLink>
           </nav>
         </div>
       </header>
@@ -919,9 +1032,12 @@ function Site() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/themes" element={<Themes />} />
+          <Route path="/masters" element={<Masters />} />
           <Route path="/programme" element={<Programme />} />
           <Route path="/students" element={<Students />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:projectId" element={<Opportunity />} />
           <Route path="/apply" element={<Apply />} />
           <Route path="/contact" element={<Contact />} />
           <Route
@@ -991,10 +1107,12 @@ function Site() {
           <div className="footer-links">
             <Link to="/about">About the programme</Link>
             <Link to="/programme">PhD Programme</Link>
+            <Link to="/themes">Research themes</Link>
+            <Link to="/masters">Masters+</Link>
             <Link to="/students">Our students</Link>
           </div>
           <div className="footer-links">
-            <Link to="/projects">PhD studentships</Link>
+            <Link to="/projects">PhD Proposals</Link>
             <Link to="/apply">How to Apply</Link>
             <Link to="/contact">Contact</Link>
           </div>
@@ -1013,7 +1131,8 @@ function Site() {
           <a href="https://www.strath.ac.uk/websiteprivacynotice/">
             University privacy notice <ArrowUpRight size={13} />
           </a>
-          <a href="https://commons.wikimedia.org/wiki/File:Cloisters,_University_Of_Glasgow.jpg">Campus photo: LornaMCampbell, CC BY-SA 4.0</a>
+          <a href="https://www.flickr.com/photos/giuseppemilo/16331067284/">Glasgow skyline: Giuseppe Milo</a>
+          <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0 (display cropped)</a>
         </div>
       </footer>
     </>

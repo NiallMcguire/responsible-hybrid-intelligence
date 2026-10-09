@@ -45,8 +45,8 @@
 }
 .page-intro {
   background-image:
-    linear-gradient(90deg, #eef3f7 0%, #eef3f7f2 45%, #eef3f780 100%),
-    url("/images/logo-banner-4.webp");
+    linear-gradient(90deg, rgba(6, 20, 45, 0.94), rgba(6, 20, 45, 0.65) 50%, rgba(6, 20, 45, 0.12)),
+    var(--banner-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -93,7 +93,11 @@
 .header .nav-apply {
   background: var(--blue);
   color: white;
-  padding: 14px 18px;
+  padding: 16px 24px;
+  min-height: 52px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
   display: flex;
   gap: 15px;
   align-items: center;
@@ -518,9 +522,15 @@ footer {
   align-items: center;
 }
 .page-intro {
-  background-color: #eef3f7;
+  background-color: #061b40;
+  color: white;
   padding: 30px 0 65px;
-  border-bottom: 1px solid #dde5eb;
+  border-bottom: 1px solid #061b40;
+}
+.page-intro .eyebrow,
+.page-intro .breadcrumb,
+.page-intro .breadcrumb a:hover {
+  color: #d7e6ff;
 }
 .breadcrumb {
   display: flex;
@@ -540,7 +550,7 @@ footer {
 .page-intro p {
   font-size: 19px;
   max-width: 760px;
-  color: #5c6b77;
+  color: #e2e9ec;
   margin: 0;
 }
 .prose {
@@ -780,10 +790,10 @@ footer {
 .project .minus {
   display: none;
 }
-.project[open] .minus {
+.project details[open] .minus {
   display: block;
 }
-.project[open] .plus {
+.project details[open] .plus {
   display: none;
 }
 .project summary:hover {
@@ -793,6 +803,80 @@ footer {
   margin: 0 0 30px 70px;
   padding: 25px;
   background: #f3f6f9;
+}
+.project-overview {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 28px 10px 12px;
+}
+.project-overview > div {
+  min-width: 0;
+  flex: 1;
+}
+.project-overview h2 {
+  font-size: 22px;
+  margin-block: 8px;
+}
+.project-overview p {
+  font-size: 13px;
+  color: #4d6373;
+  margin: 5px 0;
+}
+.project-overview .action {
+  flex-shrink: 0;
+}
+.project summary {
+  padding: 14px 10px;
+  font-size: 14px;
+}
+.pathway-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  border-bottom: 1px solid #ccd6dd;
+  margin-bottom: 28px;
+}
+.pathway-tabs a {
+  padding: 12px 0;
+  font-size: 14px;
+  border-bottom: 3px solid transparent;
+}
+.pathway-tabs a[aria-current="page"] {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.opportunity-page dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+.opportunity-page dt {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--muted);
+}
+.opportunity-page dd {
+  margin: 6px 0 0;
+}
+@media (max-width: 600px) {
+  .project-overview {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+  }
+  .project-overview .action {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .project-overview h2 {
+    font-size: 19px;
+  }
+  .opportunity-page dl {
+    grid-template-columns: 1fr;
+  }
 }
 .project-content > p {
   color: var(--muted);
